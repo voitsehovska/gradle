@@ -22,20 +22,24 @@ import org.gradle.performance.fixture.BuildExperimentRunner
 import org.gradle.performance.fixture.BuildExperimentSpec
 import org.gradle.performance.fixture.CrossBuildPerformanceTestRunner
 import org.gradle.performance.fixture.GradleSessionProvider
+import org.gradle.performance.fixture.PerformanceTestConditions
 import org.gradle.performance.fixture.PerformanceTestDirectoryProvider
 import org.gradle.performance.fixture.PerformanceTestIdProvider
-import org.gradle.performance.fixture.PerformanceTestRetryRule
 import org.gradle.performance.results.CrossBuildPerformanceResults
 import org.gradle.performance.results.CrossBuildResultsStore
 import org.gradle.performance.results.DataReporter
 import org.gradle.test.fixtures.file.CleanupTestDirectory
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
-import org.gradle.testing.internal.util.RetryRule
 import org.junit.Rule
+import org.spockframework.runtime.extension.builtin.RetryConditionContext
+import spock.lang.Retry
 import spock.lang.Specification
+
+import static spock.lang.Retry.Mode.SETUP_FEATURE_CLEANUP
 
 @CompileStatic
 @CleanupTestDirectory
+@Retry(condition = { RetryConditionContext ctx -> PerformanceTestConditions.whenSlowerButNotAdhoc(ctx.failure) }, mode = SETUP_FEATURE_CLEANUP, count = 2)
 class AbstractCrossBuildPerformanceTest extends Specification {
     private static final DataReporter<CrossBuildPerformanceResults> RESULT_STORE = new CrossBuildResultsStore()
 
@@ -46,9 +50,6 @@ class AbstractCrossBuildPerformanceTest extends Specification {
 
     @Rule
     PerformanceTestIdProvider performanceTestIdProvider = new PerformanceTestIdProvider()
-
-    @Rule
-    RetryRule retry = new PerformanceTestRetryRule()
 
     CrossBuildPerformanceTestRunner runner
 
