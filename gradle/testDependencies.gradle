@@ -18,7 +18,7 @@ ext {
 }
 
 // Test classpath libraries
-testLibraries.spock =   'org.spockframework.spock:spock-core:spock-1.2-RC1'
+testLibraries.spock =   'com.github.marcphilipp.spock:spock-core:b041edd132'
 testLibraries.jsoup =   'org.jsoup:jsoup:1.6.3'
 testLibraries.xmlunit = 'xmlunit:xmlunit:1.3'
 testLibraries.jetty =   'org.mortbay.jetty:jetty:6.1.26'
