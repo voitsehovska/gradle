@@ -129,7 +129,7 @@ class LenientPlatformDependencyMetadata implements ModuleDependencyMetadata, For
         return force;
     }
 
-    private class LenientPlatformConfigurationMetadata extends DefaultConfigurationMetadata {
+    private class LenientPlatformConfigurationMetadata extends DefaultConfigurationMetadata implements ConfigurationMetadata {
 
         private final VirtualPlatformState platformState;
         private final ComponentIdentifier platformId;
@@ -170,6 +170,7 @@ class LenientPlatformDependencyMetadata implements ModuleDependencyMetadata, For
                             break;
                         }
                     }
+                    platformState.attachOrphanEdges();
                 }
             }
             return result == null ? Collections.<DependencyMetadata>emptyList() : result;
